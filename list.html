@@ -4,15 +4,30 @@
 <body>
     <script>
 
-        var iDiv = document.createElement('div'),
-        jDiv = document.createElement('div');
+        var iDiv = document.createElement('div');
+
     iDiv.id = 'block';
     iDiv.className = 'block';
-    jDiv.className = 'block-2';
 
-    jDiv.textContent = "dfsdfdsf";
-    iDiv.appendChild(jDiv);
+    for(let i = 0; i <30; i++)
+    {
+        var jDiv = document.createElement('div');
+        jDiv.className = 'block-2';
+        var inp = document.createElement('input');
+        inp.className = "checkbox" + i.toString();
+        inp.type = "checkbox"
+        inp.id = "input"
+        jDiv.textContent = "dfsdfdsf " + i.toString();
+        jDiv.appendChild(inp);
+        iDiv.appendChild(jDiv);
+
+    }
     document.getElementsByTagName('body')[0].appendChild(iDiv);
+
+
+    input.oninput = function() {
+        alert("input")
+      };
     </script>
 
 
