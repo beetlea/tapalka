@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html>
-
+<!--- https://stackoverflow.com/questions/14266730/js-how-to-cache-a-variable-->
 <body>
 
 
@@ -69,8 +69,97 @@
 
 
   <script>
+
+    let eng_word=["apple", "banana", "cucumber"];
+    let ru_word=["яблоко", "банан", "огурец"];
+
+    let cnange_word = 0;
+    let cnt_word = 0;
+
     h = window.screen.height;
     w = window.screen.width;
+
+
+    window.addEventListener('load', () => {
+      document.getElementById("eng_word_").innerHTML = eng_word[cnt_word];
+      document.getElementById("ru_word_").innerHTML = "   ";
+    });
+
+    function del_word() {
+      if(eng_word.length != 0)
+      {
+        eng_word.splice(cnt_word,1);
+        ru_word.splice(cnt_word,1);
+        next_word();
+      }
+      else
+      {
+        document.getElementById("eng_word_").innerHTML = "Добавьте новое слово";
+      }
+    }
+
+    function translate_word() {
+      if(eng_word.length != 0) 
+      {
+        alert(eng_word.length);
+        if(cnange_word == 0)
+        {
+          document.getElementById("eng_word_").innerHTML = eng_word[cnt_word];
+          document.getElementById("ru_word_").innerHTML = ru_word[cnt_word];
+        }
+        else
+        {
+          document.getElementById("eng_word_").innerHTML = ru_word[cnt_word];
+          document.getElementById("ru_word_").innerHTML = eng_word[cnt_word];
+        }
+      }
+    }
+
+    function change() {
+      if(eng_word.length != 0) 
+      {
+        if(cnange_word == 0)
+        {
+          cnange_word = 1;
+          document.getElementById("eng_word_").innerHTML = ru_word[cnt_word];
+          document.getElementById("ru_word_").innerHTML = "   ";
+        }
+        else{
+          document.getElementById("eng_word_").innerHTML = eng_word[cnt_word];
+          document.getElementById("ru_word_").innerHTML = "  ";
+          cnange_word = 0;
+        }
+      }
+    }
+
+    function next_word() {
+      cnt_word++;
+      if((cnt_word == eng_word.length) || (cnt_word > eng_word.length))
+      {
+        cnt_word = 0;
+      }
+
+      if(eng_word.length != 0)
+      {
+        alert(eng_word.length);
+        if(cnange_word == 0)
+        {
+          document.getElementById("eng_word_").innerHTML = eng_word[cnt_word];
+          document.getElementById("ru_word_").innerHTML = "   ";
+        }
+        else
+        {
+          document.getElementById("eng_word_").innerHTML = ru_word[cnt_word];
+          document.getElementById("ru_word_").innerHTML = "   ";
+        }
+      }
+      else
+      {
+        document.getElementById("eng_word_").innerHTML = "Добавьте новое слово";
+        document.getElementById("ru_word_").innerHTML = "   ";
+      }
+      //alert("next_word")
+    }
    // alert( `w=${w},h=${h}`);
 
     //result = prompt("title", "sdfsdf");
@@ -81,33 +170,28 @@
 
 <div class="vertical">
 
-  <h1>Английское слово</h1>
-  <h1>Английское перевод</h1>
+  <h1 id="eng_word_">   </h1>
+  <h1 id="ru_word_">   </h1>
 </div>
 
 <div class="line">
-  <a href="http://daruse.ru/generator-knopok-online" class="button_1741031191827" target="_blank">
+  <a class="button_1741031191827" target="_blank" onclick="del_word()">
     Убрать слово
   </a>
 
 
   <div class="vertical">
-    <a href="http://daruse.ru/generator-knopok-online" class="button_1741031191827" target="_blank">
-      Убрать слово
+    <a  class="button_1741031191827" target="_blank" onclick="translate_word()">
+      Показать перевод
     </a>
-    <a href="http://daruse.ru/generator-knopok-online" class="button_1741031191827" target="_blank">
-      Убрать слово
-    </a>
-
-
-    <a href="http://daruse.ru/generator-knopok-online" class="button_1741031191827" target="_blank">
-      Убрать слово
+    <a  class="button_1741031191827" target="_blank" onclick="change()">
+      Поменять местами
     </a>
   </div>
 
 
-  <a href="http://daruse.ru/generator-knopok-online" class="button_1741031191827" target="_blank">
-    Запомнить слово
+  <a  class="button_1741031191827" target="_blank" onclick="next_word()">
+    Следующее слово
   </a>
 </div>
 </body>
