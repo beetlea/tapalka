@@ -1,70 +1,310 @@
 <!DOCTYPE HTML>
 <html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
 <!--- https://stackoverflow.com/questions/14266730/js-how-to-cache-a-variable-->
 <body>
 
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      html{height: 100%;}
-      body {position:relative; min-height: 100%;}
+        html, body {
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2vw;
+            overflow-x: hidden;
+        }
+
+        .vertical {
+            text-align: center;
+            margin-bottom: 3vh;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 4vw;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            width: 90vw;
+            max-width: 600px;
+            min-width: 280px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #eng_word_, #ru_word_ {
+            font-size: clamp(1.8em, 5vw, 2.5em);
+            font-weight: 300;
+            margin: 2vh 0;
+            color: #2c3e50;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            min-height: 8vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        #eng_word_ {
+            color: #3498db;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 20px;
+        }
+
+        #ru_word_ {
+            color: #e74c3c;
+            font-style: italic;
+        }
+
+        .line {
+            display: flex;
+            justify-content: center;
+            gap: 2vw;
+            flex-wrap: wrap;
+            width: 90vw;
+            max-width: 1000px;
+        }
 
         .button_1741031191827 {
-            width: 90%;
-            height: 90%;
-            box-sizing: content-box;
-            display: inline-block !important;
-            text-decoration: none !important;
-            background-color: #eaeaea !important;
-            color: #006089 !important;
-            border: 3px solid #006089 !important;
-            border-radius: 22px !important;
-            font-size: 16px !important;
-            margin: 5px;
-            /*padding: 15px 50px !important; */
-            transition: all 0.8s ease !important;
-        }
-        .button_1741031191827:hover{
-            text-decoration: none !important; 
-            background-color: #006089 !important;
-            color: #ffeded !important;
-            border-color: #006089 !important;
-        }
-
-        .center_block {
-            width: 20%;
-            display: inline-block !important;
-        }
-
-        .round {
-          width: 100%;
-          height: 100%;
-          box-sizing: content-box;
-          padding: 0;
-            background-color: #e03e25; /* Цвет фона */
-            border-radius: 50%; /* Радиус скругления */
-            border: none; /* Убираем рамку вокруг кнопки */
-            padding: 15px 50px !important; 
-           }
-
-
-           .line {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 2vh 3vw;
+            border-radius: 50px;
+            font-size: clamp(14px, 2.5vw, 18px);
+            font-weight: 500;
+            text-decoration: none;
             display: flex;
             align-items: center;
-            justify-content: space-around;
-            bottom: 0;
-            height: 50vh;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            cursor: pointer;
+            min-width: 140px;
+            max-width: 200px;
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
 
-          }
-           
-          .vertical{
-            width: 100%;
-            flex-direction: column;
-            display: flex;
-            justify-content:space-around;
-            align-items: center;
-          }
-        </style>
+        .button_1741031191827:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+            background: linear-gradient(45deg, #2980b9, #3498db);
+            text-decoration: none;
+            color: white;
+        }
+
+        .button_1741031191827:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .vertical .button_1741031191827:first-child {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .vertical .button_1741031191827:first-child:hover {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+        }
+
+        .vertical .button_1741031191827:last-child {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .vertical .button_1741031191827:last-child:hover {
+            background: linear-gradient(45deg, #e67e22, #f39c12);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+        }
+
+        .line > .button_1741031191827:first-child {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .line > .button_1741031191827:first-child:hover {
+            background: linear-gradient(45deg, #c0392b, #e74c3c);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        .line > .button_1741031191827:last-child {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+        }
+
+        .line > .button_1741031191827:last-child:hover {
+            background: linear-gradient(45deg, #8e44ad, #9b59b6);
+            box-shadow: 0 8px 25px rgba(155, 89, 182, 0.4);
+        }
+
+        @media (max-width: 1024px) {
+            .vertical {
+                width: 95vw;
+                padding: 5vw;
+            }
+
+            .line {
+                width: 95vw;
+                gap: 2vw;
+            }
+
+            .line > .vertical {
+                background: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 4vw;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 2vw;
+            }
+
+            .vertical {
+                width: 96vw;
+                padding: 5vw;
+                margin-bottom: 3vh;
+            }
+
+            #eng_word_, #ru_word_ {
+                font-size: clamp(1.5em, 5vw, 2.2em);
+                min-height: 6vh;
+            }
+
+            .button_1741031191827 {
+                padding: 2vh 3vw;
+                font-size: clamp(12px, 3vw, 16px);
+                min-width: 100px;
+                max-width: 160px;
+            }
+
+            .line {
+                width: 96vw;
+                gap: 2vw;
+            }
+
+            .line > .vertical {
+                background: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 4vw;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1vw;
+            }
+
+            .vertical {
+                width: 98vw;
+                padding: 4vw;
+                margin-bottom: 2vh;
+            }
+
+            #eng_word_, #ru_word_ {
+                font-size: clamp(1.2em, 4.5vw, 1.8em);
+                min-height: 5vh;
+                margin: 1vh 0;
+            }
+
+            .line {
+                flex-direction: column;
+                align-items: center;
+                gap: 2vh;
+                width: 98vw;
+            }
+
+            .line > .vertical {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                gap: 2vw;
+                margin: 0;
+                padding: 3vw;
+                background: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .button_1741031191827 {
+                padding: 2vh 2vw;
+                font-size: clamp(11px, 3.5vw, 14px);
+                min-width: 80px;
+                max-width: none;
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 320px) {
+            body {
+                padding: 1vw;
+            }
+
+            .vertical {
+                width: 98vw;
+                padding: 3vw;
+            }
+
+            #eng_word_, #ru_word_ {
+                font-size: clamp(1em, 4vw, 1.5em);
+                min-height: 4vh;
+            }
+
+            .button_1741031191827 {
+                padding: 1.5vh 2vw;
+                font-size: 10px;
+                min-width: 70px;
+            }
+
+            .line {
+                gap: 1.5vh;
+            }
+
+            .line > .vertical {
+                gap: 1.5vw;
+                padding: 2vw;
+                background: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(10px);
+                border-radius: 15px;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    </style>
 
 
 
@@ -80,16 +320,108 @@
     w = window.screen.width;
 
 
+
+    function loadWordsFromCookies() {
+      const languages = ['english', 'spanish', 'french', 'german', 'japanese', 'korean', 'italian', 'hindi', 'chinese', 'portuguese'];
+      const translations = {
+        'the': {spanish:'el/la',french:'le/la',german:'der/die/das',japanese:'その',korean:'그',italian:'il/la',hindi:'वह',chinese:'这个',portuguese:'o/a'},
+        'be': {spanish:'ser/estar',french:'être',german:'sein',japanese:'である',korean:'이다',italian:'essere',hindi:'होना',chinese:'是',portuguese:'ser/estar'},
+        'to': {spanish:'a',french:'à',german:'zu',japanese:'に',korean:'에',italian:'a',hindi:'को',chinese:'到',portuguese:'para'},
+        'of': {spanish:'de',french:'de',german:'von',japanese:'の',korean:'의',italian:'di',hindi:'का',chinese:'的',portuguese:'de'},
+        'and': {spanish:'y',french:'et',german:'und',japanese:'と',korean:'그리고',italian:'e',hindi:'और',chinese:'和',portuguese:'e'},
+        'el': {english:'the',french:'le',german:'der',japanese:'その',korean:'그',italian:'il',hindi:'वह',chinese:'这个',portuguese:'o'},
+        'de': {english:'of/from',french:'de',german:'von',japanese:'の',korean:'의',italian:'di',hindi:'का',chinese:'的',portuguese:'de'},
+        'que': {english:'that/what',french:'que',german:'was/dass',japanese:'何',korean:'무엇',italian:'che',hindi:'क्या',chinese:'什么',portuguese:'que'},
+        'y': {english:'and',french:'et',german:'und',japanese:'と',korean:'그리고',italian:'e',hindi:'और',chinese:'和',portuguese:'e'},
+        'le': {english:'the',spanish:'el',german:'der',japanese:'その',korean:'그',italian:'il',hindi:'वह',chinese:'这个',portuguese:'o'},
+        'der': {english:'the',spanish:'el',french:'le',japanese:'その',korean:'그',italian:'il',hindi:'वह',chinese:'这个',portuguese:'o'},
+        'die': {english:'the',spanish:'la',french:'la',japanese:'その',korean:'그',italian:'la',hindi:'वह',chinese:'这个',portuguese:'a'},
+        'の': {english:'of',spanish:'de',french:'de',german:'von',korean:'의',italian:'di',hindi:'का',chinese:'的',portuguese:'de'},
+        'に': {english:'to/in',spanish:'a/en',french:'à/dans',german:'zu/in',korean:'에',italian:'a/in',hindi:'को/में',chinese:'到/在',portuguese:'para/em'},
+        '이': {english:'this',spanish:'este',french:'ce',german:'dies',japanese:'これ',korean:'이',italian:'questo',hindi:'यह',chinese:'这个',portuguese:'este'},
+        '의': {english:'of',spanish:'de',french:'de',german:'von',japanese:'の',italian:'di',hindi:'का',chinese:'的',portuguese:'de'},
+        'il': {english:'the/he',spanish:'el/él',french:'le/il',german:'der/er',japanese:'その/彼',korean:'그/그는',hindi:'वह',chinese:'这个/他',portuguese:'o/ele'},
+        'di': {english:'of',spanish:'de',french:'de',german:'von',japanese:'の',korean:'의',hindi:'का',chinese:'的',portuguese:'de'},
+        'के': {english:'of',spanish:'de',french:'de',german:'von',japanese:'の',korean:'의',italian:'di',chinese:'的',portuguese:'de'},
+        'में': {english:'in',spanish:'en',french:'dans',german:'in',japanese:'で',korean:'에서',italian:'in',chinese:'在',portuguese:'em'},
+        '的': {english:'of',spanish:'de',french:'de',german:'von',japanese:'の',korean:'의',italian:'di',hindi:'का',portuguese:'de'},
+        '一': {english:'one',spanish:'uno',french:'un',german:'eins',japanese:'一',korean:'하나',italian:'uno',hindi:'एक',chinese:'一',portuguese:'um'}
+      };
+      
+      eng_word = [];
+      ru_word = [];
+      
+      // Загружаем пользовательские слова
+      const customWords = localStorage.getItem('selected_custom');
+      const customTranslations = localStorage.getItem('translated_custom_russian');
+      
+      if (customWords && customTranslations) {
+        const words = JSON.parse(customWords);
+        const translationsArray = JSON.parse(customTranslations);
+        
+        words.forEach((word, index) => {
+          eng_word.push(word);
+          ru_word.push(translationsArray[index] || 'перевод');
+        });
+      }
+      
+      // Загружаем слова из предустановленных языков
+      languages.forEach(sourceLang => {
+        const savedWords = localStorage.getItem(`selected_${sourceLang}`);
+        if (savedWords) {
+          const words = JSON.parse(savedWords);
+          
+          languages.forEach(targetLang => {
+            if (targetLang !== sourceLang) {
+              const translatedWords = localStorage.getItem(`translated_${sourceLang}_${targetLang}`);
+              if (translatedWords) {
+                const translationsArray = JSON.parse(translatedWords);
+                
+                words.forEach((word, index) => {
+                  eng_word.push(word);
+                  ru_word.push(translationsArray[index] || (translations[word] && translations[word][targetLang]) || 'перевод');
+                });
+                return;
+              }
+            }
+          });
+          
+          if (eng_word.length === customWords ? JSON.parse(customWords).length : 0) {
+            words.forEach(word => {
+              eng_word.push(word);
+              ru_word.push(translations[word] && translations[word]['english'] ? translations[word]['english'] : 'перевод');
+            });
+          }
+        }
+      });
+    }
+
     window.addEventListener('load', () => {
-      document.getElementById("eng_word_").innerHTML = eng_word[cnt_word];
-      document.getElementById("ru_word_").innerHTML = "   ";
+      loadWordsFromCookies();
+      if (eng_word.length > 0) {
+        shuffleWords(); // Перемешиваем слова при загрузке
+        cnt_word = 0;
+        document.getElementById("eng_word_").innerHTML = eng_word[cnt_word];
+        document.getElementById("ru_word_").innerHTML = "   ";
+      } else {
+        document.getElementById("eng_word_").innerHTML = "Добавьте слова в list.html";
+        document.getElementById("ru_word_").innerHTML = "   ";
+      }
     });
 
     function del_word() {
       if(eng_word.length != 0)
       {
+        const wordToDelete = eng_word[cnt_word];
+        const translationToDelete = ru_word[cnt_word];
+        
+        // Удаляем из массивов
         eng_word.splice(cnt_word,1);
         ru_word.splice(cnt_word,1);
+        
+        // Удаляем из localStorage
+        removeWordFromStorage(wordToDelete, translationToDelete);
+        
         next_word();
       }
       else
@@ -97,11 +429,61 @@
         document.getElementById("eng_word_").innerHTML = "Добавьте новое слово";
       }
     }
+    
+    function removeWordFromStorage(word, translation) {
+      // Проверяем пользовательские слова
+      let customWords = localStorage.getItem('selected_custom');
+      let customTranslations = localStorage.getItem('translated_custom_russian');
+      
+      if (customWords && customTranslations) {
+        const words = JSON.parse(customWords);
+        const translations = JSON.parse(customTranslations);
+        
+        const index = words.indexOf(word);
+        if (index !== -1 && translations[index] === translation) {
+          words.splice(index, 1);
+          translations.splice(index, 1);
+          localStorage.setItem('selected_custom', JSON.stringify(words));
+          localStorage.setItem('translated_custom_russian', JSON.stringify(translations));
+          return;
+        }
+      }
+      
+      // Проверяем предустановленные языки
+      const languages = ['english', 'spanish', 'french', 'german', 'japanese', 'korean', 'italian', 'hindi', 'chinese', 'portuguese'];
+      
+      languages.forEach(sourceLang => {
+        const savedWords = localStorage.getItem(`selected_${sourceLang}`);
+        if (savedWords) {
+          const words = JSON.parse(savedWords);
+          const wordIndex = words.indexOf(word);
+          
+          if (wordIndex !== -1) {
+            words.splice(wordIndex, 1);
+            localStorage.setItem(`selected_${sourceLang}`, JSON.stringify(words));
+            
+            // Удаляем из переводов
+            languages.forEach(targetLang => {
+              if (targetLang !== sourceLang) {
+                const translatedWords = localStorage.getItem(`translated_${sourceLang}_${targetLang}`);
+                if (translatedWords) {
+                  const translations = JSON.parse(translatedWords);
+                  if (translations[wordIndex]) {
+                    translations.splice(wordIndex, 1);
+                    localStorage.setItem(`translated_${sourceLang}_${targetLang}`, JSON.stringify(translations));
+                  }
+                }
+              }
+            });
+          }
+        }
+      });
+    }
 
     function translate_word() {
       if(eng_word.length != 0) 
       {
-        alert(eng_word.length);
+        ///alert(eng_word.length);
         if(cnange_word == 0)
         {
           document.getElementById("eng_word_").innerHTML = eng_word[cnt_word];
@@ -132,16 +514,42 @@
       }
     }
 
+    function shuffleWords() {
+      if (eng_word.length <= 1) return;
+      
+      // Создаем массив индексов
+      const indices = Array.from({length: eng_word.length}, (_, i) => i);
+      
+      // Перемешиваем индексы
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      
+      // Создаем новые массивы в перемешанном порядке
+      const newEngWords = [];
+      const newRuWords = [];
+      
+      indices.forEach(index => {
+        newEngWords.push(eng_word[index]);
+        newRuWords.push(ru_word[index]);
+      });
+      
+      eng_word = newEngWords;
+      ru_word = newRuWords;
+    }
+
     function next_word() {
       cnt_word++;
       if((cnt_word == eng_word.length) || (cnt_word > eng_word.length))
       {
         cnt_word = 0;
+        shuffleWords(); // Перемешиваем слова когда дошли до конца
       }
 
       if(eng_word.length != 0)
       {
-        alert(eng_word.length);
+        ///alert(eng_word.length);
         if(cnange_word == 0)
         {
           document.getElementById("eng_word_").innerHTML = eng_word[cnt_word];

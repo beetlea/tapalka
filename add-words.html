@@ -1,0 +1,291 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2vw;
+        }
+
+        .vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3vh;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6vw;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            width: 90vw;
+            max-width: 500px;
+            min-width: 280px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .page-title {
+            font-size: clamp(1.8em, 4vw, 2.5em);
+            font-weight: 300;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2vh;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1vh;
+        }
+
+        .input-group label {
+            font-size: clamp(14px, 2.5vw, 18px);
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 2vh 2vw;
+            border: none;
+            border-radius: 15px;
+            font-size: clamp(14px, 2.5vw, 16px);
+            background: rgba(52, 152, 219, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.15);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .button_1741031191827 {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 2.5vh 4vw;
+            border-radius: 50px;
+            font-size: clamp(16px, 3vw, 18px);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            width: 100%;
+            max-width: 250px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .button_1741031191827:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+        }
+
+        .button_1741031191827:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .back-button {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+            max-width: 150px;
+            font-size: clamp(14px, 2.5vw, 16px);
+            padding: 2vh 3vw;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(45deg, #7f8c8d, #95a5a6);
+            box-shadow: 0 8px 25px rgba(149, 165, 166, 0.4);
+        }
+
+        .success-message {
+            background: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+            padding: 2vh 3vw;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            border: 2px solid rgba(39, 174, 96, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 3vw;
+            }
+
+            .vertical {
+                width: 95vw;
+                padding: 6vw;
+                gap: 2.5vh;
+            }
+
+            .input-group input {
+                padding: 2.5vh 3vw;
+            }
+
+            .button_1741031191827 {
+                padding: 2vh 3vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 2vw;
+            }
+
+            .vertical {
+                width: 96vw;
+                padding: 5vw;
+                gap: 2vh;
+            }
+
+            .input-group input {
+                padding: 2vh 3vw;
+            }
+
+            .button_1741031191827 {
+                padding: 2vh 3vw;
+                max-width: none;
+            }
+
+            .back-button {
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 320px) {
+            body {
+                padding: 1vw;
+            }
+
+            .vertical {
+                width: 98vw;
+                padding: 4vw;
+                gap: 1.5vh;
+            }
+
+            .input-group input {
+                padding: 1.5vh 2vw;
+            }
+
+            .button_1741031191827 {
+                padding: 1.5vh 2vw;
+                font-size: 14px;
+            }
+        }
+    </style>
+
+    <div class="vertical">
+        <h1 class="page-title">Добавить слова</h1>
+        
+        <div class="input-group">
+            <label for="mainWord">Основное слово:</label>
+            <input type="text" id="mainWord" placeholder="Введите слово">
+        </div>
+        
+        <div class="input-group">
+            <label for="translation">Перевод:</label>
+            <input type="text" id="translation" placeholder="Введите перевод">
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            Слово успешно добавлено!
+        </div>
+        
+        <button class="button_1741031191827" onclick="addWord()">
+            Добавить слово
+        </button>
+        
+        <button class="button_1741031191827 back-button" onclick="window.location.href='menu.html'">
+            Назад в меню
+        </button>
+    </div>
+
+    <script>
+        function addWord() {
+            const mainWord = document.getElementById('mainWord').value.trim();
+            const translation = document.getElementById('translation').value.trim();
+            
+            if (!mainWord || !translation) {
+                alert('Пожалуйста, заполните все поля!');
+                return;
+            }
+            
+            // Получаем существующие пользовательские слова
+            let selectedWords = localStorage.getItem('selected_custom');
+            let translatedWords = localStorage.getItem('translated_custom_russian');
+            
+            if (!selectedWords) {
+                selectedWords = [];
+                translatedWords = [];
+            } else {
+                selectedWords = JSON.parse(selectedWords);
+                translatedWords = JSON.parse(translatedWords) || [];
+            }
+            
+            // Добавляем новое слово
+            selectedWords.push(mainWord);
+            translatedWords.push(translation);
+            
+            // Сохраняем в localStorage в том же формате что и list.html
+            localStorage.setItem('selected_custom', JSON.stringify(selectedWords));
+            localStorage.setItem('translated_custom_russian', JSON.stringify(translatedWords));
+            
+            // Показываем сообщение об успехе
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            
+            // Очищаем поля
+            document.getElementById('mainWord').value = '';
+            document.getElementById('translation').value = '';
+            
+            // Скрываем сообщение через 3 секунды
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Добавляем обработчик Enter для полей ввода
+        document.getElementById('mainWord').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('translation').focus();
+            }
+        });
+        
+        document.getElementById('translation').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addWord();
+            }
+        });
+    </script>
+</body>
+</html>

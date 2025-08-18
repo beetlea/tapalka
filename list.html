@@ -1,38 +1,470 @@
 <!DOCTYPE HTML>
 <html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        html, body {
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2vw;
+        }
+
+        .language-selector {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2vw;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 1vh 0;
+            width: 90vw;
+            max-width: 1000px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 2vw;
+            flex-wrap: wrap;
+        }
+
+        .selector-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1vh;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .selector-group label {
+            font-size: clamp(14px, 2vw, 18px);
+            font-weight: 500;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        select {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: clamp(14px, 1.8vw, 16px);
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            min-width: 200px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        select:hover {
+            background: linear-gradient(45deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        select option {
+            background: white;
+            color: #333;
+            padding: 10px;
+        }
+
+        .word-list {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3vw;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 2vh 0;
+            width: 90vw;
+            max-width: 800px;
+            max-height: 60vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .word-list h3 {
+            color: #2c3e50;
+            font-size: clamp(18px, 3vw, 24px);
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 15px;
+        }
+
+        .word-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .word-item:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateX(5px);
+        }
+
+        .word-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #3498db;
+        }
+
+        .word-item label {
+            font-size: clamp(14px, 2.2vw, 16px);
+            color: #2c3e50;
+            cursor: pointer;
+            flex: 1;
+            font-weight: 400;
+        }
+
+        button {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: clamp(14px, 2.5vw, 18px);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            min-width: 200px;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .word-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .word-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .word-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            border-radius: 10px;
+        }
+
+        .word-list::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #2980b9, #3498db);
+        }
+
+        @media (max-width: 1024px) {
+            .language-selector {
+                flex-direction: column;
+                gap: 2vh;
+                padding: 3vw;
+            }
+
+            .selector-group {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 2vw;
+            }
+
+            .language-selector {
+                padding: 4vw;
+                gap: 2vh;
+            }
+
+            .word-list {
+                padding: 4vw;
+                max-height: 50vh;
+            }
+
+            select, button {
+                padding: 3vw 4vw;
+                font-size: clamp(14px, 4vw, 18px);
+            }
+
+            .word-item {
+                padding: 2vw 3vw;
+            }
+
+            .word-item label {
+                font-size: clamp(14px, 3.5vw, 16px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1vw;
+            }
+
+            .language-selector, .word-list {
+                width: 98vw;
+                padding: 3vw;
+            }
+
+            .selector-group {
+                width: 100%;
+                gap: 1vh;
+            }
+
+            .selector-group label {
+                font-size: clamp(12px, 3.5vw, 16px);
+            }
+
+            select, button {
+                width: 100%;
+                min-width: auto;
+                max-width: none;
+                padding: 3vw;
+                font-size: clamp(12px, 3.5vw, 16px);
+            }
+
+            .word-list {
+                max-height: 45vh;
+            }
+
+            .word-item {
+                padding: 2vw;
+                margin: 1vw 0;
+            }
+
+            .word-item input[type="checkbox"] {
+                width: 16px;
+                height: 16px;
+                margin-right: 2vw;
+            }
+
+            .word-item label {
+                font-size: clamp(12px, 3vw, 14px);
+            }
+        }
+
+        @media (max-width: 320px) {
+            body {
+                padding: 1vw;
+            }
+
+            .language-selector, .word-list {
+                width: 98vw;
+                padding: 2vw;
+            }
+
+            .selector-group label {
+                font-size: 12px;
+            }
+
+            select, button {
+                padding: 2vw;
+                font-size: 12px;
+            }
+
+            .word-list h3 {
+                font-size: 16px;
+            }
+
+            .word-item {
+                padding: 1.5vw;
+            }
+
+            .word-item label {
+                font-size: 11px;
+            }
+
+            .word-item input[type="checkbox"] {
+                width: 14px;
+                height: 14px;
+            }
+        }
+    </style>
+</head>
 <body>
+    <div class="language-selector">
+        <div class="selector-group">
+            <label>Выберите язык:</label>
+            <select id="languageSelect" onchange="loadWords()">
+                <option value="">-- Выберите язык --</option>
+                <option value="english">Английский</option>
+                <option value="spanish">Испанский</option>
+                <option value="french">Французский</option>
+                <option value="german">Немецкий</option>
+                <option value="japanese">Японский</option>
+                <option value="korean">Корейский</option>
+                <option value="italian">Итальянский</option>
+                <option value="hindi">Хинди</option>
+                <option value="chinese">Китайский</option>
+                <option value="portuguese">Португальский</option>
+            </select>
+        </div>
+        
+        <div class="selector-group">
+            <label>Язык перевода:</label>
+            <select id="translateSelect" onchange="loadWords()">
+                <option value="">-- Выберите язык перевода --</option>
+                <option value="english">Английский</option>
+                <option value="spanish">Испанский</option>
+                <option value="french">Французский</option>
+                <option value="german">Немецкий</option>
+                <option value="japanese">Японский</option>
+                <option value="korean">Корейский</option>
+                <option value="italian">Итальянский</option>
+                <option value="hindi">Хинди</option>
+                <option value="chinese">Китайский</option>
+                <option value="portuguese">Португальский</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="wordList" class="word-list"></div>
+    
+    <div class="language-selector">
+        <button onclick="saveAllWords()" style="padding: 10px 20px; background-color: #006089; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Сохранить выбранные слова
+        </button>
+    </div>
+
     <script>
+        const words = {
+            english: ['the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she'],
+            spanish: ['el', 'de', 'que', 'y', 'a', 'en', 'un', 'es', 'se', 'no', 'te', 'lo', 'le', 'da', 'su', 'por', 'son', 'con', 'para', 'al', 'la', 'una', 'del', 'los', 'como', 'pero', 'sus', 'las', 'si', 'ya'],
+            french: ['le', 'de', 'et', 'à', 'un', 'il', 'être', 'et', 'en', 'avoir', 'que', 'pour', 'dans', 'ce', 'son', 'une', 'sur', 'avec', 'ne', 'se', 'pas', 'tout', 'plus', 'par', 'grand', 'il', 'me', 'même', 'faire', 'elle'],
+            german: ['der', 'die', 'und', 'in', 'den', 'von', 'zu', 'das', 'mit', 'sich', 'des', 'auf', 'für', 'ist', 'im', 'dem', 'nicht', 'ein', 'eine', 'als', 'auch', 'es', 'an', 'werden', 'aus', 'er', 'hat', 'dass', 'sie', 'nach'],
+            japanese: ['の', 'に', 'は', 'を', 'た', 'が', 'で', 'て', 'と', 'し', 'れ', 'さ', 'ある', 'いる', 'も', 'する', 'から', 'な', 'こと', 'として', 'い', 'や', 'れる', 'など', 'なっ', 'ない', 'この', 'ため', 'その', 'あっ'],
+            korean: ['이', '의', '가', '을', '는', '에', '한', '하다', '으로', '그', '와', '되다', '수', '있다', '등', '들', '그리고', '또한', '때문에', '같은', '것', '더', '많은', '대한', '통해', '위해', '따라', '중', '후', '전'],
+            italian: ['il', 'di', 'che', 'e', 'la', 'a', 'un', 'per', 'in', 'con', 'non', 'una', 'su', 'le', 'si', 'da', 'al', 'del', 'lo', 'come', 'ma', 'se', 'ci', 'questo', 'tutto', 'più', 'dalla', 'suo', 'essere', 'fare'],
+            hindi: ['के', 'में', 'की', 'है', 'को', 'और', 'से', 'का', 'एक', 'पर', 'ने', 'भी', 'यह', 'हो', 'था', 'तो', 'ही', 'या', 'हैं', 'थे', 'कि', 'जो', 'कर', 'गया', 'उस', 'अब', 'तक', 'साथ', 'लिए', 'बाद'],
+            chinese: ['的', '一', '是', '在', '不', '了', '有', '和', '人', '这', '中', '大', '为', '上', '个', '国', '我', '以', '要', '他', '时', '来', '用', '们', '生', '到', '作', '地', '于', '出'],
+            portuguese: ['de', 'a', 'o', 'e', 'do', 'da', 'em', 'um', 'para', 'é', 'com', 'não', 'uma', 'os', 'no', 'se', 'na', 'por', 'mais', 'as', 'dos', 'como', 'mas', 'foi', 'ao', 'ele', 'das', 'tem', 'à', 'seu']
+        };
+        
+        const translations = {
+            'the': {spanish:'el/la',french:'le/la',german:'der/die/das',japanese:'その',korean:'그',italian:'il/la',hindi:'वह',chinese:'这个',portuguese:'o/a'},
+            'be': {spanish:'ser/estar',french:'être',german:'sein',japanese:'である',korean:'이다',italian:'essere',hindi:'होना',chinese:'是',portuguese:'ser/estar'},
+            'to': {spanish:'a',french:'à',german:'zu',japanese:'に',korean:'에',italian:'a',hindi:'को',chinese:'到',portuguese:'para'},
+            'of': {spanish:'de',french:'de',german:'von',japanese:'の',korean:'의',italian:'di',hindi:'का',chinese:'的',portuguese:'de'},
+            'and': {spanish:'y',french:'et',german:'und',japanese:'と',korean:'그리고',italian:'e',hindi:'और',chinese:'和',portuguese:'e'},
+            'a': {spanish:'un/una',french:'un/une',german:'ein/eine',japanese:'一つの',korean:'하나의',italian:'un/una',hindi:'एक',chinese:'一个',portuguese:'um/uma'},
+            'in': {spanish:'en',french:'dans',german:'in',japanese:'で',korean:'에서',italian:'in',hindi:'में',chinese:'在',portuguese:'em'},
+            'that': {spanish:'que/eso',french:'que/cela',german:'das/dass',japanese:'それ',korean:'그것',italian:'che/quello',hindi:'वह',chinese:'那个',portuguese:'que/isso'},
+            'have': {spanish:'tener',french:'avoir',german:'haben',japanese:'持つ',korean:'가지다',italian:'avere',hindi:'होना',chinese:'有',portuguese:'ter'},
+            'I': {spanish:'yo',french:'je',german:'ich',japanese:'私',korean:'나',italian:'io',hindi:'मैं',chinese:'我',portuguese:'eu'},
+            'el': {english:'the',french:'le',german:'der',japanese:'その',korean:'그',italian:'il',hindi:'वह',chinese:'这个',portuguese:'o'},
+            'de': {english:'of/from',spanish:'de',french:'de',german:'von',japanese:'の',korean:'의',italian:'di',hindi:'का',chinese:'的',portuguese:'de'},
+            'que': {english:'that/what',spanish:'que',french:'que',german:'was/dass',japanese:'何',korean:'무엇',italian:'che',hindi:'क्या',chinese:'什么',portuguese:'que'},
+            'y': {english:'and',spanish:'y',french:'et',german:'und',japanese:'と',korean:'그리고',italian:'e',hindi:'और',chinese:'和',portuguese:'e'},
+            'le': {english:'the',spanish:'el',french:'le',german:'der',japanese:'その',korean:'그',italian:'il',hindi:'वह',chinese:'这个',portuguese:'o'},
+            'der': {english:'the',spanish:'el',french:'le',german:'der',japanese:'その',korean:'그',italian:'il',hindi:'वह',chinese:'这个',portuguese:'o'},
+            'die': {english:'the',spanish:'la',french:'la',german:'die',japanese:'その',korean:'그',italian:'la',hindi:'वह',chinese:'这个',portuguese:'a'},
+            'の': {english:'of',spanish:'de',french:'de',german:'von',japanese:'の',korean:'의',italian:'di',hindi:'का',chinese:'的',portuguese:'de'},
+            'に': {english:'to/in',spanish:'a/en',french:'à/dans',german:'zu/in',japanese:'に',korean:'에',italian:'a/in',hindi:'को/में',chinese:'到/在',portuguese:'para/em'},
+            '이': {english:'this',spanish:'este',french:'ce',german:'dies',japanese:'これ',korean:'이',italian:'questo',hindi:'यह',chinese:'这个',portuguese:'este'},
+            '의': {english:'of',spanish:'de',french:'de',german:'von',japanese:'の',korean:'의',italian:'di',hindi:'का',chinese:'的',portuguese:'de'},
+            'il': {english:'the/he',spanish:'el/él',french:'le/il',german:'der/er',japanese:'その/彼',korean:'그/그는',italian:'il',hindi:'वह',chinese:'这个/他',portuguese:'o/ele'},
+            'di': {english:'of',spanish:'de',french:'de',german:'von',japanese:'の',korean:'의',italian:'di',hindi:'का',chinese:'的',portuguese:'de'},
+            'के': {english:'of',spanish:'de',french:'de',german:'von',japanese:'の',korean:'의',italian:'di',hindi:'के',chinese:'的',portuguese:'de'},
+            'में': {english:'in',spanish:'en',french:'dans',german:'in',japanese:'で',korean:'에서',italian:'in',hindi:'में',chinese:'在',portuguese:'em'},
+            '的': {english:'of',spanish:'de',french:'de',german:'von',japanese:'の',korean:'의',italian:'di',hindi:'का',chinese:'的',portuguese:'de'},
+            '一': {english:'one',spanish:'uno',french:'un',german:'eins',japanese:'一',korean:'하나',italian:'uno',hindi:'एक',chinese:'一',portuguese:'um'}
+        };
 
-        var iDiv = document.createElement('div');
+        function loadWords() {
+            const language = document.getElementById('languageSelect').value;
+            const translateLang = document.getElementById('translateSelect').value;
+            const wordListDiv = document.getElementById('wordList');
+            
+            if (!language) {
+                wordListDiv.innerHTML = '';
+                return;
+            }
+            
+            const savedWords = localStorage.getItem(`selected_${language}`) ? JSON.parse(localStorage.getItem(`selected_${language}`)) : [];
+            
+            let html = '<h3>Популярные слова:</h3>';
+            words[language].forEach((word, index) => {
+                const checked = savedWords.includes(word) ? 'checked' : '';
+                let translation = '';
+                if (translateLang && translations[word] && translations[word][translateLang]) {
+                    translation = ` - ${translations[word][translateLang]}`;
+                }
+                html += `<div class="word-item">
+                    <input type="checkbox" id="word_${index}" value="${word}" ${checked} onchange="saveSelection('${language}')">
+                    <label for="word_${index}">${word}${translation}</label>
+                </div>`;
+            });
+            
+            wordListDiv.innerHTML = html;
+        }
 
-    iDiv.id = 'block';
-    iDiv.className = 'block';
+        function saveSelection(language) {
+            const checkboxes = document.querySelectorAll('#wordList input[type="checkbox"]:checked');
+            const selectedWords = Array.from(checkboxes).map(cb => cb.value);
+            const translateLang = document.getElementById('translateSelect').value;
+            localStorage.setItem(`selected_${language}`, JSON.stringify(selectedWords));
+            if (translateLang) {
+                const translatedWords = selectedWords.map(word => translations[word] && translations[word][translateLang] ? translations[word][translateLang] : word);
+                localStorage.setItem(`translated_${language}_${translateLang}`, JSON.stringify(translatedWords));
+            }
+        }
+        
+        function saveAllWords() {
+            const language = document.getElementById('languageSelect').value;
+            const translateLang = document.getElementById('translateSelect').value;
+            
+            if (!language) {
+                alert('Выберите язык!');
+                return;
+            }
+            
+            const checkboxes = document.querySelectorAll('#wordList input[type="checkbox"]:checked');
+            const selectedWords = Array.from(checkboxes).map(cb => cb.value);
+            
+            if (selectedWords.length === 0) {
+                alert('Выберите хотя бы одно слово!');
+                return;
+            }
+            
+            localStorage.setItem(`selected_${language}`, JSON.stringify(selectedWords));
+            
+            if (translateLang) {
+                const translatedWords = selectedWords.map(word => translations[word] && translations[word][translateLang] ? translations[word][translateLang] : word);
+                localStorage.setItem(`translated_${language}_${translateLang}`, JSON.stringify(translatedWords));
+            }
+            
+            alert(`Сохранено ${selectedWords.length} слов!`);
+        }
 
-    for(let i = 0; i <30; i++)
-    {
-        var jDiv = document.createElement('div');
-        jDiv.className = 'block-2';
-        var inp = document.createElement('input');
-        inp.className = "checkbox" + i.toString();
-        inp.type = "checkbox"
-        inp.id = "input"
-        jDiv.textContent = "dfsdfdsf " + i.toString();
-        jDiv.appendChild(inp);
-        iDiv.appendChild(jDiv);
 
-    }
-    document.getElementsByTagName('body')[0].appendChild(iDiv);
-
-
-    input.oninput = function() {
-        alert("input")
-      };
     </script>
-
-
-
-
 </body>
-
 </html>
