@@ -208,6 +208,35 @@
                         },
                         body: JSON.stringify(user)
                     });
+                    
+                    // Отслеживание событий приложения
+                    function sendAction(action) {
+                        fetch('/user_action', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                action: action,
+                                user_id: user.id,
+                                username: user.username || 'Неизвестен'
+                            })
+                        });
+                    }
+                    
+                    // События видимости страницы
+                    document.addEventListener('visibilitychange', () => {
+                        if (document.hidden) {
+                            sendAction('свернул приложение');
+                        } else {
+                            sendAction('развернул приложение');
+                        }
+                    });
+                    
+                    // Событие закрытия окна
+                    window.addEventListener('beforeunload', () => {
+                        sendAction('закрыл приложение');
+                    });
                 }
             }
         });

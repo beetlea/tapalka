@@ -35,6 +35,19 @@ def user_info():
         return jsonify({'status': 'success'})
     return jsonify({'status': 'error'})
 
+@app.route('/user_action', methods=['POST'])
+def user_action():
+    data = request.get_json()
+    if data:
+        action = data.get('action')
+        user_id = data.get('user_id', 'Неизвестен')
+        username = data.get('username', 'Неизвестен')
+        
+        print(f"Пользователь @{username} (ID: {user_id}) - {action}")
+        
+        return jsonify({'status': 'success'})
+    return jsonify({'status': 'error'})
+
 if __name__ == "__main__":
     
     try:
