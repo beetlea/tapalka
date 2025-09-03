@@ -1,42 +1,26 @@
 #!/usr/bin/env python3
-import http.server
-import socketserver
-import ssl
+from flask import Flask, send_from_directory, send_file
+
 import os
+import ssl
 
 PORT = 80
 
-class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
-    def end_headers(self):
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', '*')
-        super().end_headers()
+app = Flask(__name__)
 
-    def do_GET(self):
-        if self.path == '/':
-            self.path = '/menu.html'
-        return super().do_GET()
+
+@app.route('/')
+def index():
+    return send_file('menu.html')
+
+@app.route('/<path:filename>')
+def static_files(filename):
+    return send_from_directory('.', filename)
 
 if __name__ == "__main__":
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     
-    with socketserver.TCPServer(("", PORT), MyHTTPRequestHandler) as httpd:
-        # Настройка SSL
-        context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-        try:
-            context.load_cert_chain('YOURPUBLIC.pem', 'YOURPUBLIC.pem')
-            httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
-            print(f"HTTPS сервер запущен на https://localhost:{PORT}")
-        except FileNotFoundError:
-            print("Файл YOURPUBLIC.pem не найден. Запуск HTTP сервера...")
-            print(f"HTTP сервер запущен на http://localhost:{PORT}")
-        except Exception as e:
-            print(f"Ошибка SSL: {e}. Запуск HTTP сервера...")
-            print(f"HTTP сервер запущен на http://localhost:{PORT}")
-        
-        print("Для остановки нажмите Ctrl+C")
-        try:
-            httpd.serve_forever()
-        except KeyboardInterrupt:
-            print("\nСервер остановлен")
+    try:
+        app.run(host='0.0.0.0', port=PORT, debug=False)
+    except OSError as e:
+        print(f"Ошибка запуска сервера: {e}")
+        print(f"Попробуйте другой порт или остановите процесс на порту {PORT}")
