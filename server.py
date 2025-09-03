@@ -37,7 +37,16 @@ def user_info():
 
 @app.route('/user_action', methods=['POST'])
 def user_action():
-    data = request.get_json()
+    # Поддержка sendBeacon (text/plain)
+    if request.content_type == 'text/plain':
+        import json
+        try:
+            data = json.loads(request.data.decode('utf-8'))
+        except:
+            return '', 204
+    else:
+        data = request.get_json()
+    
     if data:
         action = data.get('action')
         user_id = data.get('user_id', 'Неизвестен')
@@ -45,8 +54,8 @@ def user_action():
         
         print(f"Пользователь @{username} (ID: {user_id}) - {action}")
         
-        return jsonify({'status': 'success'})
-    return jsonify({'status': 'error'})
+        return '', 204  # No Content для sendBeacon
+    return '', 204
 
 if __name__ == "__main__":
     
