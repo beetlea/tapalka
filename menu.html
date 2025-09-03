@@ -197,6 +197,18 @@
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.ready();
                 window.Telegram.WebApp.expand();
+                
+                // Отправляем данные пользователя на сервер
+                const user = window.Telegram.WebApp.initDataUnsafe.user;
+                if (user) {
+                    fetch('/user_info', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(user)
+                    });
+                }
             }
         });
     </script>
