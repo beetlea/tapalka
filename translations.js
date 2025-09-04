@@ -35,7 +35,19 @@ const translations = {
         'swap_words': 'Swap Words',
         'next_word': 'Next Word',
         'add_new_word': 'Add new word',
-        'add_words_in_list': 'Add words in list.html'
+        'add_words_in_list': 'Add words in list.html',
+        
+        // Language names
+        'lang_english': 'English',
+        'lang_spanish': 'Spanish', 
+        'lang_french': 'French',
+        'lang_german': 'German',
+        'lang_japanese': 'Japanese',
+        'lang_korean': 'Korean',
+        'lang_italian': 'Italian',
+        'lang_hindi': 'Hindi',
+        'lang_chinese': 'Chinese',
+        'lang_portuguese': 'Portuguese'
     },
     
     ru: {
@@ -73,7 +85,19 @@ const translations = {
         'swap_words': 'Поменять местами',
         'next_word': 'Следующее слово',
         'add_new_word': 'Добавьте новое слово',
-        'add_words_in_list': 'Добавьте слова в list.html'
+        'add_words_in_list': 'Добавьте слова в list.html',
+        
+        // Language names
+        'lang_english': 'Английский',
+        'lang_spanish': 'Испанский', 
+        'lang_french': 'Французский',
+        'lang_german': 'Немецкий',
+        'lang_japanese': 'Японский',
+        'lang_korean': 'Корейский',
+        'lang_italian': 'Итальянский',
+        'lang_hindi': 'Хинди',
+        'lang_chinese': 'Китайский',
+        'lang_portuguese': 'Португальский'
     },
     
     es: {
@@ -111,7 +135,19 @@ const translations = {
         'swap_words': 'Intercambiar Palabras',
         'next_word': 'Siguiente Palabra',
         'add_new_word': 'Agregar nueva palabra',
-        'add_words_in_list': 'Agregar palabras en list.html'
+        'add_words_in_list': 'Agregar palabras en list.html',
+        
+        // Language names
+        'lang_english': 'Inglés',
+        'lang_spanish': 'Español', 
+        'lang_french': 'Francés',
+        'lang_german': 'Alemán',
+        'lang_japanese': 'Japonés',
+        'lang_korean': 'Coreano',
+        'lang_italian': 'Italiano',
+        'lang_hindi': 'Hindi',
+        'lang_chinese': 'Chino',
+        'lang_portuguese': 'Portugués'
     },
     
     de: {
@@ -149,7 +185,19 @@ const translations = {
         'swap_words': 'Wörter Tauschen',
         'next_word': 'Nächstes Wort',
         'add_new_word': 'Neues Wort hinzufügen',
-        'add_words_in_list': 'Wörter in list.html hinzufügen'
+        'add_words_in_list': 'Wörter in list.html hinzufügen',
+        
+        // Language names
+        'lang_english': 'Englisch',
+        'lang_spanish': 'Spanisch', 
+        'lang_french': 'Französisch',
+        'lang_german': 'Deutsch',
+        'lang_japanese': 'Japanisch',
+        'lang_korean': 'Koreanisch',
+        'lang_italian': 'Italienisch',
+        'lang_hindi': 'Hindi',
+        'lang_chinese': 'Chinesisch',
+        'lang_portuguese': 'Portugiesisch'
     },
     
     fr: {
@@ -187,7 +235,19 @@ const translations = {
         'swap_words': 'Échanger les Mots',
         'next_word': 'Mot Suivant',
         'add_new_word': 'Ajouter un nouveau mot',
-        'add_words_in_list': 'Ajouter des mots dans list.html'
+        'add_words_in_list': 'Ajouter des mots dans list.html',
+        
+        // Language names
+        'lang_english': 'Anglais',
+        'lang_spanish': 'Espagnol', 
+        'lang_french': 'Français',
+        'lang_german': 'Allemand',
+        'lang_japanese': 'Japonais',
+        'lang_korean': 'Coréen',
+        'lang_italian': 'Italien',
+        'lang_hindi': 'Hindi',
+        'lang_chinese': 'Chinois',
+        'lang_portuguese': 'Portugais'
     }
 };
 
