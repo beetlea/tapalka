@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="telegram-tracker.js"></script>
+    <script src="translations.js"></script>
 </head>
 <!--- https://stackoverflow.com/questions/14266730/js-how-to-cache-a-variable-->
 <body>
@@ -404,6 +405,49 @@
       if (window.Telegram && window.Telegram.WebApp) {
         window.Telegram.WebApp.ready();
         window.Telegram.WebApp.expand();
+        
+        applyTranslations();
+        
+        // Отправляем данные пользователя на сервер
+        const user = window.Telegram.WebApp.initDataUnsafe.user;
+        if (user) {
+          fetch('/user_info', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user)
+          });
+          
+          // Отслеживание событий приложения
+          function sendAction(action) {
+            fetch('/user_action', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                action: action,
+                user_id: user.id,
+                username: user.username || 'Неизвестен'
+              })
+            });
+          }
+          
+          // События видимости страницы
+          document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+              sendAction('свернул приложение');
+            } else {
+              sendAction('развернул приложение');
+            }
+          });
+          
+          // Событие закрытия окна
+          window.addEventListener('beforeunload', () => {
+            sendAction('закрыл приложение');
+          });
+        }
       }
       
       loadWordsFromCookies();
@@ -413,7 +457,7 @@
         document.getElementById("eng_word_").innerHTML = eng_word[cnt_word];
         document.getElementById("ru_word_").innerHTML = "   ";
       } else {
-        document.getElementById("eng_word_").innerHTML = "Добавьте слова в list.html";
+        document.getElementById("eng_word_").innerHTML = translate('add_words_in_list');
         document.getElementById("ru_word_").innerHTML = "   ";
       }
     });
@@ -435,7 +479,7 @@
       }
       else
       {
-        document.getElementById("eng_word_").innerHTML = "Добавьте новое слово";
+        document.getElementById("eng_word_").innerHTML = translate('add_new_word');
       }
     }
     
@@ -572,7 +616,7 @@
       }
       else
       {
-        document.getElementById("eng_word_").innerHTML = "Добавьте новое слово";
+        document.getElementById("eng_word_").innerHTML = translate('add_new_word');
         document.getElementById("ru_word_").innerHTML = "   ";
       }
       //alert("next_word")
@@ -593,23 +637,23 @@
 </div>
 
 <div class="line">
-  <a class="button_1741031191827" target="_blank" onclick="del_word()">
-    Убрать слово
+  <a class="button_1741031191827" target="_blank" onclick="del_word()" data-translate="remove_word">
+    Remove Word
   </a>
 
 
   <div class="vertical">
-    <a  class="button_1741031191827" target="_blank" onclick="translate_word()">
-      Показать перевод
+    <a  class="button_1741031191827" target="_blank" onclick="translate_word()" data-translate="show_translation">
+      Show Translation
     </a>
-    <a  class="button_1741031191827" target="_blank" onclick="change()">
-      Поменять местами
+    <a  class="button_1741031191827" target="_blank" onclick="change()" data-translate="swap_words">
+      Swap Words
     </a>
   </div>
 
 
-  <a  class="button_1741031191827" target="_blank" onclick="next_word()">
-    Следующее слово
+  <a  class="button_1741031191827" target="_blank" onclick="next_word()" data-translate="next_word">
+    Next Word
   </a>
 </div>
 </body>

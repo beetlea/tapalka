@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="telegram-tracker.js"></script>
+    <script src="translations.js"></script>
 </head>
 <body>
     <style>
@@ -177,18 +178,18 @@
 
 
     <div class="vertical">
-        <h1 class="menu-title">Изучение языков</h1>
+        <h1 class="menu-title" data-translate="menu_title">Language Learning</h1>
         
-        <a href="list.html" class="button_1741031191827">
-            Выбрать слова
+        <a href="list.html" class="button_1741031191827" data-translate="select_words">
+            Select Words
         </a>
         
-        <a href="add-words.html" class="button_1741031191827">
-            Добавить слова
+        <a href="add-words.html" class="button_1741031191827" data-translate="add_words">
+            Add Words
         </a>
         
-        <a href="index.html" class="button_1741031191827">
-            Учить слова
+        <a href="index.html" class="button_1741031191827" data-translate="learn_words">
+            Learn Words
         </a>
     </div>
 
@@ -198,6 +199,9 @@
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.ready();
                 window.Telegram.WebApp.expand();
+                
+                // Применяем переводы
+                applyTranslations();
                 
                 // Отправляем данные пользователя на сервер
                 const user = window.Telegram.WebApp.initDataUnsafe.user;

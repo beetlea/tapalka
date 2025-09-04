@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="telegram-tracker.js"></script>
+    <script src="translations.js"></script>
     <style>
         * {
             margin: 0;
@@ -317,9 +318,9 @@
     <div class="language-selector">
         <button onclick="window.location.href='menu.html'" style="position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">←</button>
         <div class="selector-group">
-            <label>Выберите язык:</label>
+            <label data-translate="select_language">Select language:</label>
             <select id="languageSelect" onchange="loadWords()">
-                <option value="">-- Выберите язык --</option>
+                <option value="" data-translate="select_language_option">-- Select language --</option>
                 <option value="english">Английский</option>
                 <option value="spanish">Испанский</option>
                 <option value="french">Французский</option>
@@ -334,9 +335,9 @@
         </div>
         
         <div class="selector-group">
-            <label>Язык перевода:</label>
+            <label data-translate="translation_language">Translation language:</label>
             <select id="translateSelect" onchange="loadWords()">
-                <option value="">-- Выберите язык перевода --</option>
+                <option value="" data-translate="select_translation_option">-- Select translation language --</option>
                 <option value="english">Английский</option>
                 <option value="spanish">Испанский</option>
                 <option value="french">Французский</option>
@@ -354,8 +355,8 @@
     <div id="wordList" class="word-list"></div>
     
     <div class="language-selector">
-        <button onclick="saveAllWords()" class="save-button">
-            Сохранить выбранные слова
+        <button onclick="saveAllWords()" class="save-button" data-translate="save_selected">
+            Save selected words
         </button>
     </div>
 
@@ -415,7 +416,7 @@
             
             const savedWords = localStorage.getItem(`selected_${language}`) ? JSON.parse(localStorage.getItem(`selected_${language}`)) : [];
             
-            let html = '<h3>Популярные слова:</h3>';
+            let html = `<h3 data-translate="popular_words">${translate('popular_words')}</h3>`;
             words[language].forEach((word, index) => {
                 const checked = savedWords.includes(word) ? 'checked' : '';
                 let translation = '';
@@ -447,7 +448,7 @@
             const translateLang = document.getElementById('translateSelect').value;
             
             if (!language) {
-                alert('Выберите язык!');
+                alert(translate('select_language_alert'));
                 return;
             }
             
@@ -455,7 +456,7 @@
             const selectedWords = Array.from(checkboxes).map(cb => cb.value);
             
             if (selectedWords.length === 0) {
-                alert('Выберите хотя бы одно слово!');
+                alert(translate('select_word_alert'));
                 return;
             }
             
@@ -466,7 +467,7 @@
                 localStorage.setItem(`translated_${language}_${translateLang}`, JSON.stringify(translatedWords));
             }
             
-            alert(`Сохранено ${selectedWords.length} слов!`);
+            alert(`${selectedWords.length} ${translate('words_saved')}`);
         }
 
 
@@ -476,6 +477,49 @@
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.ready();
                 window.Telegram.WebApp.expand();
+                
+                applyTranslations();
+                
+                // Отправляем данные пользователя на сервер
+                const user = window.Telegram.WebApp.initDataUnsafe.user;
+                if (user) {
+                    fetch('/user_info', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(user)
+                    });
+                    
+                    // Отслеживание событий приложения
+                    function sendAction(action) {
+                        fetch('/user_action', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                action: action,
+                                user_id: user.id,
+                                username: user.username || 'Неизвестен'
+                            })
+                        });
+                    }
+                    
+                    // События видимости страницы
+                    document.addEventListener('visibilitychange', () => {
+                        if (document.hidden) {
+                            sendAction('свернул приложение');
+                        } else {
+                            sendAction('развернул приложение');
+                        }
+                    });
+                    
+                    // Событие закрытия окна
+                    window.addEventListener('beforeunload', () => {
+                        sendAction('закрыл приложение');
+                    });
+                }
             }
         });
     </script>

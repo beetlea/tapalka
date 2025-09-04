@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="telegram-tracker.js"></script>
+    <script src="translations.js"></script>
 </head>
 <body>
     <style>
@@ -210,28 +211,28 @@
 
     <div class="vertical">
         <button onclick="window.location.href='menu.html'" style="position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">←</button>
-        <h1 class="page-title">Добавить слова</h1>
+        <h1 class="page-title" data-translate="add_words_title">Add Words</h1>
         
         <div class="input-group">
-            <label for="mainWord">Основное слово:</label>
-            <input type="text" id="mainWord" placeholder="Введите слово">
+            <label for="mainWord" data-translate="main_word">Main word:</label>
+            <input type="text" id="mainWord" data-translate="enter_word" placeholder="Enter word">
         </div>
         
         <div class="input-group">
-            <label for="translation">Перевод:</label>
-            <input type="text" id="translation" placeholder="Введите перевод">
+            <label for="translation" data-translate="translation">Translation:</label>
+            <input type="text" id="translation" data-translate="enter_translation" placeholder="Enter translation">
         </div>
         
-        <div class="success-message" id="successMessage">
-            Слово успешно добавлено!
+        <div class="success-message" id="successMessage" data-translate="word_added">
+            Word successfully added!
         </div>
         
-        <button class="button_1741031191827" onclick="addWord()">
-            Добавить слово
+        <button class="button_1741031191827" onclick="addWord()" data-translate="add_word_btn">
+            Add Word
         </button>
         
-        <button class="button_1741031191827 back-button" onclick="window.location.href='menu.html'">
-            Назад в меню
+        <button class="button_1741031191827 back-button" onclick="window.location.href='menu.html'" data-translate="back_to_menu">
+            Back to Menu
         </button>
     </div>
 
@@ -241,7 +242,7 @@
             const translation = document.getElementById('translation').value.trim();
             
             if (!mainWord || !translation) {
-                alert('Пожалуйста, заполните все поля!');
+                alert(translate('fill_fields'));
                 return;
             }
             
@@ -297,6 +298,49 @@
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.ready();
                 window.Telegram.WebApp.expand();
+                
+                applyTranslations();
+                
+                // Отправляем данные пользователя на сервер
+                const user = window.Telegram.WebApp.initDataUnsafe.user;
+                if (user) {
+                    fetch('/user_info', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(user)
+                    });
+                    
+                    // Отслеживание событий приложения
+                    function sendAction(action) {
+                        fetch('/user_action', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                action: action,
+                                user_id: user.id,
+                                username: user.username || 'Неизвестен'
+                            })
+                        });
+                    }
+                    
+                    // События видимости страницы
+                    document.addEventListener('visibilitychange', () => {
+                        if (document.hidden) {
+                            sendAction('свернул приложение');
+                        } else {
+                            sendAction('развернул приложение');
+                        }
+                    });
+                    
+                    // Событие закрытия окна
+                    window.addEventListener('beforeunload', () => {
+                        sendAction('закрыл приложение');
+                    });
+                }
             }
         });
     </script>
