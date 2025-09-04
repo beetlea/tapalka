@@ -206,12 +206,13 @@
                 // Отправляем данные пользователя на сервер
                 const user = window.Telegram.WebApp.initDataUnsafe.user;
                 if (user) {
+                    const userLang = getUserLanguage();
                     fetch('/user_info', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(user)
+                        body: JSON.stringify({...user, app_language: userLang})
                     });
                     
                     // Отслеживание событий приложения

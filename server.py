@@ -25,11 +25,13 @@ def user_info():
         username = data.get('username', 'Не указан')
         first_name = data.get('first_name', 'Не указано')
         last_name = data.get('last_name', '')
+        app_language = data.get('app_language', 'en')
         
         print(f"Пользователь подключился:")
         print(f"ID: {user_id}")
         print(f"Username: @{username}")
         print(f"Имя: {first_name} {last_name}")
+        print(f"Язык приложения: {app_language}")
         print("-" * 40)
         
         return jsonify({'status': 'success'})
@@ -51,8 +53,10 @@ def user_action():
         action = data.get('action')
         user_id = data.get('user_id', 'Неизвестен')
         username = data.get('username', 'Неизвестен')
+        app_language = data.get('app_language', '')
         
-        print(f"Пользователь @{username} (ID: {user_id}) - {action}")
+        lang_info = f" (язык: {app_language})" if app_language else ""
+        print(f"Пользователь @{username} (ID: {user_id}){lang_info} - {action}")
         
         return '', 204  # No Content для sendBeacon
     return '', 204
