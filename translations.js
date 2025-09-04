@@ -866,9 +866,9 @@ const translations = {
 function getUserLanguage() {
     if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe.user) {
         const userLang = window.Telegram.WebApp.initDataUnsafe.user.language_code;
-        return translations[userLang] ? userLang : 'en';
+        return 'fi';///translations[userLang] ? userLang : 'en';
     }
-    return 'en';
+    return 'fi';///'en';
 }
 
 // Функция для перевода текста
